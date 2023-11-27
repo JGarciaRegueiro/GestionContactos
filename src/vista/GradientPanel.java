@@ -12,6 +12,9 @@ public class GradientPanel extends JPanel{
 	Color colorStart = Color.gray;
 	Color colorEnd = Color.cyan;
 	
+	public final static Color edixC1 = new Color(106, 0, 194);
+	public final static Color edixC2 = new Color(0, 204, 255);
+	
 	float percentageGradiant;
 	
 	public GradientPanel(Color a, Color b, float pg) {		
@@ -28,8 +31,8 @@ public class GradientPanel extends JPanel{
 
 		
 		GradientPaint gp = new GradientPaint(
-				getWidth(), getHeight() * percentageGradiant, colorStart, 
-				getWidth(), getHeight(), colorEnd);
+				0, getHeight() * percentageGradiant, colorStart, 
+				0, getHeight(), colorEnd);
 		g2d.setPaint(gp);
 		
 		g2d.fillRect(0, 0, getWidth(), getHeight());

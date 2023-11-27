@@ -73,6 +73,10 @@ public class VistaContacto extends JDialog {
 		buttonCancel.setBounds(getWidth() - 120 - 20 - 10, 200, 120, 50);
 		add(buttonCancel);
 		
+		GradientPanel gradientPanel = new  GradientPanel(GradientPanel.edixC2, GradientPanel.edixC1, .3f);
+		gradientPanel.setSize(getWidth(), getHeight());
+		add(gradientPanel);
+		
 		buttonOK.addActionListener(controlador);
 		buttonCancel.addActionListener(controlador);
 		

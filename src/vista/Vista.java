@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -10,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -20,9 +22,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 import controlador.Controlador;
+import controlador.Main;
 import modelo.Contacto;
 import modelo.ListaContactos;
 
@@ -34,6 +39,9 @@ public class Vista extends JFrame{
 	DefaultTableModel tableModel;
 	JScrollPane scrollPane;
 	List<Contacto> listaContactos = new ArrayList<>();
+	
+
+	
 	
 	public Vista() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -72,7 +80,7 @@ public class Vista extends JFrame{
 		System.out.println("h: " + getHeight());
 				
 		titleLabel = new JLabel("Mis Contactos");
-		titleLabel.setForeground(Color.cyan);
+		titleLabel.setForeground(Color.black);
 		titleLabel.setFont(new Font("SansSerif", Font.BOLD, 45));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setBounds(0, 0, getWidth() - 10, 50);
@@ -94,15 +102,20 @@ public class Vista extends JFrame{
 		add(buttonEdit);
 
 		String[] columnName = { "Nombre", "Teléfono" };
-		tableModel = new DefaultTableModel(columnName, 0);
-
+		tableModel = new DefaultTableModel(columnName, 0) {
+			
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			};
+		};
+		
 		table = new JTable(tableModel);
-
+			
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(40, 60, getWidth()-90, 450);
-		add(scrollPane);
-		
-		GradientPanel gradientPanel = new GradientPanel(Color.white, Color.red, .8f);		
+		add(scrollPane);		
+	
+		GradientPanel gradientPanel = new GradientPanel(GradientPanel.edixC1, GradientPanel.edixC2,.3f);		
 		gradientPanel.setSize(getWidth(), getHeight());
 		add(gradientPanel);
 

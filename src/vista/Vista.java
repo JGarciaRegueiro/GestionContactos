@@ -3,6 +3,8 @@ package vista;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -14,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -35,10 +38,11 @@ public class Vista extends JFrame{
 	public Vista() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
+		setResizable(false);
 		
 		setTitle("Mis contactos");
 		setSize(400, 700);
-		getContentPane().setBackground(Color.white);
+		//getContentPane().setBackground(Color.white);
 		
 		init();
 		
@@ -66,7 +70,7 @@ public class Vista extends JFrame{
 	private void init() {	
 		System.out.println("w: " + getWidth());
 		System.out.println("h: " + getHeight());
-		
+				
 		titleLabel = new JLabel("Mis Contactos");
 		titleLabel.setForeground(Color.cyan);
 		titleLabel.setFont(new Font("SansSerif", Font.BOLD, 45));
@@ -97,6 +101,10 @@ public class Vista extends JFrame{
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(40, 60, getWidth()-90, 450);
 		add(scrollPane);
+		
+		GradientPanel gradientPanel = new GradientPanel(Color.white, Color.red, .8f);		
+		gradientPanel.setSize(getWidth(), getHeight());
+		add(gradientPanel);
 
 	}
 	
@@ -169,6 +177,7 @@ public class Vista extends JFrame{
 		
 		return button;
 	}
+	
 	
 	public static ImageIcon changeColorIcon(ImageIcon iconoOriginal, Color colorNuevo) {
         // Crear una imagen con el mismo tamaño que el icono original

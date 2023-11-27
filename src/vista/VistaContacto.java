@@ -14,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import controlador.Controlador;
-import modelo.Contacto;
-import modelo.ListaContactos;
 
 public class VistaContacto extends JDialog {
 	

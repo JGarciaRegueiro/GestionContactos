@@ -32,15 +32,21 @@ public class Controlador implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		JButton button = (JButton) e.getSource();
-		String selectedButton = button.getText();
+		//String selectedButton = button.getText();
+		String selectedButton = button.getName();
+		
+		System.out.println("Boton presionado: " + button.getName());
+		
+		
 		
 		switch(selectedButton) {
-			case "Añadir":
+			case "añadir":
+				vista.disableButtons();
 				vistaContacto = new VistaContacto(this);
-				break;
-				
-			case "Editar":
+				break;				
+			case "editar":
 				if (vista.getTable().getSelectedRow()!=-1) {
+					vista.disableButtons();
 					editMode=true;
 					vistaContacto = new VistaContacto(this);
 					vistaContacto.setTitle("Editar contacto");
@@ -52,7 +58,7 @@ public class Controlador implements ActionListener {
 				}
 				break;
 				
-			case "Eliminar":
+			case "eliminar":
 				if (vista.getTable().getSelectedRow()!=-1) {
 					vista.getTableModel().removeRow(vista.getTable().getSelectedRow());
 				}else {
@@ -60,7 +66,8 @@ public class Controlador implements ActionListener {
 				}
 				break;
 				
-			case "OK":
+			case "ok":
+				vista.enableButtons();
 				if (!editMode) {
 					if (!validationName(vistaContacto.getFieldName().getText()) && !validationPhone(vistaContacto.getFieldPhone().getText())) {
 						vista.getTableModel().addRow(new String[] {vistaContacto.getFieldName().getText(), vistaContacto.getFieldPhone().getText()});
@@ -77,7 +84,8 @@ public class Controlador implements ActionListener {
 				}
 				break;
 				
-			case "Cancelar":
+			case "cancelar":
+				vista.enableButtons();
 				vistaContacto.dispose();
 				break;
 		}
@@ -103,6 +111,9 @@ public class Controlador implements ActionListener {
 		return false;
 	}
 	
-	
+	public void setButtonMainListeners(boolean value) {
+		if(value) vista.enableButtons();
+		else vista.disableButtons();
+	}
 
 }

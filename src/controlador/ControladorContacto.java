@@ -161,11 +161,5 @@ public class ControladorContacto implements ActionListener {
 		field.setBorder(b);
 	}
 	
-	private boolean checkField(JTextField field) {
 	
-		int sizeB = 3;
-		Border b = BorderFactory.createLineBorder(Color.green, 3);		
-		field.setBorder(b);
-		return false;
-	}
 }

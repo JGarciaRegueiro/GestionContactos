@@ -1,5 +1,6 @@
 package controlador;
 
+import java.awt.Color;
 import java.util.List;
 
 import modelo.Contacto;
@@ -8,6 +9,8 @@ import vista.Vista;
 
 public class Main {
 
+
+	
 	public static void main(String[] args) {
 		
 		Vista vista = new Vista();

@@ -71,10 +71,9 @@ public class Controlador implements ActionListener {
 				}
 				break;
 				
-			case "ok":
-				setOK();
-				break;
-				
+			//case "ok":
+				//setOK();
+				//break;				
 			case "cancelar":
 				vista.enableButtons();
 				vistaContacto.dispose();
@@ -108,12 +107,13 @@ public class Controlador implements ActionListener {
 	}
 
 	public void setOK() {
-		vista.enableButtons();
+		
 		if (!editMode) {
 			if (!validationName(vistaContacto.getFieldName().getText()) && !validationPhone(vistaContacto.getFieldPhone().getText())) {
 				vista.getTableModel().addRow(new String[] {vistaContacto.getFieldName().getText(), vistaContacto.getFieldPhone().getText()});
 				vistaContacto.dispose();
 				editMode=false;
+				vista.enableButtons();
 			}
 		}else {
 			if (!validationName(vistaContacto.getFieldName().getText()) && !validationPhone(vistaContacto.getFieldPhone().getText())) {
@@ -121,6 +121,7 @@ public class Controlador implements ActionListener {
 				vista.getTable().setValueAt(vistaContacto.getFieldPhone().getText(),row,1);
 				vistaContacto.dispose();
 				editMode=false;
+				vista.enableButtons();
 			}
 		}
 	}

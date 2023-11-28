@@ -2,96 +2,61 @@ package vista;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 import controlador.Controlador;
 import controlador.ControladorContacto;
 
 public class VistaContacto extends JDialog {
-	
+
 	JLabel labelName, labelPhone;
 	JTextField fieldName, fieldPhone;
 	JButton buttonOK, buttonSecondary;
-	JLabel wrongName, wrongPhone;
-	
+	JTextArea wrongName, wrongPhone;
+
 	Controlador controlador;
 	ControladorContacto controladorContacto;
 	String secondAction;
-	
+
 	public ControladorContacto getControladorContacto() {
 		return controladorContacto;
 	}
-	
+
 	public VistaContacto(Controlador controlador, String action) {
 		setTitle("Nuevo contacto");
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setLayout(null);
-		setSize(300, 300);	
-		
+		setSize(300, 300);
+
 		this.controlador = controlador;
 		controladorContacto = new ControladorContacto(this, controlador);
-		
+
 		setLocationRelativeTo(null);
-		
-		
-		
+
 		secondAction = action;
 		init();
-		
-		
+
 		setVisible(true);
 	}
 
-	
-	private void init() {
-		ImageIcon iconName = changeIcon(new ImageIcon("images/person.png"), Color.black, 50);
-		ImageIcon iconPhone = changeIcon(new ImageIcon("images/phone.png"), Color.black, 50); 		
-		
-		labelName = new JLabel(iconName);
-		labelName.setBounds(20, 20, 50, 50);
-		add(labelName);
-
-		fieldName = new JTextField();
-		fieldName.setBounds(80, 30, getWidth() - 120, 30);
-		add(fieldName);
-		
-		labelPhone = new JLabel(iconPhone);
-		labelPhone.setBounds(20,100,50,50);
-		add(labelPhone);
-		
-		fieldPhone = new JTextField("");
-		fieldPhone.setBounds(80, 110, getWidth() - 120, 30);
-		add(fieldPhone);
-		
-		buttonOK = new JButton("OK");
-		buttonOK.setName("ok");
-		buttonOK.setBounds(20, 200, 120, 50);
-		add(buttonOK);
-		
-		buttonSecondary = new JButton(secondAction.substring(0,1).toUpperCase() + secondAction.substring(1));
-		buttonSecondary.setName(secondAction);
-		buttonSecondary.setBounds(getWidth() - 120 - 20 - 10, 200, 120, 50);
-		add(buttonSecondary);
-		
-		GradientPanel gradientPanel = new  GradientPanel(GradientPanel.edixC2, GradientPanel.edixC1, .3f);
-		gradientPanel.setSize(getWidth(), getHeight());
-		add(gradientPanel);
-		
-		buttonOK.addActionListener(controladorContacto);
-		buttonSecondary.addActionListener(controladorContacto);
-		
-	}
-	
-	//Getters & Setters
+	// Getters & Setters
 	public JLabel getLabelName() {
 		return labelName;
 	}
@@ -140,29 +105,102 @@ public class VistaContacto extends JDialog {
 		this.buttonSecondary = buttonCancel;
 	}
 
+	public JTextArea getWrongName() {
+		return wrongName;
+	}
+
+	public JTextArea getWrongPhone() {
+		return wrongPhone;
+	}
+
+	private void init() {
+		ImageIcon iconName = changeIcon(new ImageIcon("images/person.png"), Color.black, 50);
+		ImageIcon iconPhone = changeIcon(new ImageIcon("images/phone.png"), Color.black, 50);
+
+		labelName = new JLabel(iconName);
+		labelName.setBounds(20, 20, 50, 50);
+		add(labelName);
+
+		fieldName = new JTextField();
+		fieldName.setBounds(80, 30, getWidth() - 120, 30);
+		add(fieldName);
+		
+		wrongName = buildWrongTextArea("");
+		wrongName.setBounds(80, 60, 180, 40);
+		add(wrongName);
+		
+		labelPhone = new JLabel(iconPhone);
+		labelPhone.setBounds(20, 100, 50, 50);
+		add(labelPhone);
+
+		fieldPhone = new JTextField("");
+		fieldPhone.setBounds(80, 110, getWidth() - 120, 30);
+		add(fieldPhone);
+
+		wrongPhone = buildWrongTextArea("");
+		wrongPhone.setBounds(80, 140, 180, 40);
+		add(wrongPhone);
+		
+		buttonOK = new JButton("OK");
+		buttonOK.setName("ok");
+		buttonOK.setBounds(20, 200, 120, 50);
+		add(buttonOK);
+
+		buttonSecondary = new JButton(secondAction.substring(0, 1).toUpperCase() + secondAction.substring(1));
+		buttonSecondary.setName(secondAction);
+		buttonSecondary.setBounds(getWidth() - 120 - 20 - 10, 200, 120, 50);
+		add(buttonSecondary);
+
+		//GradientPanel gradientPanel = new GradientPanel(GradientPanel.edixC2, GradientPanel.edixC1, .3f);
+		//gradientPanel.setSize(getWidth(), getHeight());
+		//add(gradientPanel);
+
+		buttonOK.addActionListener(controladorContacto);
+		buttonSecondary.addActionListener(controladorContacto);
+
+		// Pruebas
+		int borderSize = 3;
+		fieldName.setName("name");
+		fieldPhone.setName("phone");
+		fieldName.getDocument().addDocumentListener(
+				controladorContacto.getDocumentListener(fieldName, wrongName));
+		fieldPhone.getDocument().addDocumentListener(
+				controladorContacto.getDocumentListener(fieldPhone, wrongPhone));
+	}
+
+	private JTextArea buildWrongTextArea(String str) {
+		JTextArea j = new JTextArea(str);	
+		
+		j.setForeground(Color.red);
+		j.setFont(new Font("SansSerif", Font.PLAIN, 10));
+
+		j.setLineWrap(true);
+		j.setWrapStyleWord(true);		
+		j.setBackground(null);
+		
+		return j;
+	}
 	
 	public static ImageIcon changeIcon(ImageIcon iconoOriginal, Color colorNuevo, int size) {
-        // Crear una imagen con el mismo tamaño que el icono original
-		iconoOriginal = new ImageIcon(iconoOriginal.getImage().getScaledInstance(size, size, 500));	
-		
-        BufferedImage imagenModificada = new BufferedImage(
-                iconoOriginal.getIconWidth(),
-                iconoOriginal.getIconHeight(),
-                BufferedImage.TYPE_INT_ARGB);
+		// Crear una imagen con el mismo tamaño que el icono original
+		iconoOriginal = new ImageIcon(iconoOriginal.getImage().getScaledInstance(size, size, 500));
 
-        // Obtener el contexto gráfico de la imagen
-        Graphics2D g = imagenModificada.createGraphics();
+		BufferedImage imagenModificada = new BufferedImage(iconoOriginal.getIconWidth(), iconoOriginal.getIconHeight(),
+				BufferedImage.TYPE_INT_ARGB);
 
-        // Dibujar el icono original en la imagen con el nuevo color
-        g.drawImage(iconoOriginal.getImage(), 0, 0, null);
-        g.setComposite(AlphaComposite.SrcAtop);
-        g.setColor(colorNuevo);
-        g.fillRect(0, 0, iconoOriginal.getIconWidth(), iconoOriginal.getIconHeight());
+		// Obtener el contexto gráfico de la imagen
+		Graphics2D g = imagenModificada.createGraphics();
 
-        // Liberar recursos
-        g.dispose();
+		// Dibujar el icono original en la imagen con el nuevo color
+		g.drawImage(iconoOriginal.getImage(), 0, 0, null);
+		g.setComposite(AlphaComposite.SrcAtop);
+		g.setColor(colorNuevo);
+		g.fillRect(0, 0, iconoOriginal.getIconWidth(), iconoOriginal.getIconHeight());
 
-        // Crear y devolver un nuevo ImageIcon con la imagen modificada
-        return new ImageIcon(imagenModificada);
-    }
+		// Liberar recursos
+		g.dispose();
+
+		// Crear y devolver un nuevo ImageIcon con la imagen modificada
+		return new ImageIcon(imagenModificada);
+	}
 }

@@ -14,34 +14,43 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import controlador.Controlador;
+import controlador.ControladorContacto;
 
 public class VistaContacto extends JDialog {
 	
 	JLabel labelName, labelPhone;
 	JTextField fieldName, fieldPhone;
-	JButton buttonOK, buttonCancel;
+	JButton buttonOK, buttonSecondary;
 	JLabel wrongName, wrongPhone;
 	
 	Controlador controlador;
+	ControladorContacto controladorContacto;
+	String secondAction;
 	
-	public VistaContacto(Controlador controlador) {
-		this.controlador=controlador;
-		setSize(300, 300);		
-		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		setTitle("Nuevo contacto");
-		setLayout(null);
-		init();
-		setLocationRelativeTo(null);
-		setVisible(true);
-		
-		addWindowListener(new WindowAdapter(){ 
-			@Override
-			public void windowClosing(WindowEvent e) {
-			controlador.setButtonMainListeners(true);
-				
-			}
-		});
+	public ControladorContacto getControladorContacto() {
+		return controladorContacto;
 	}
+	
+	public VistaContacto(Controlador controlador, String action) {
+		setTitle("Nuevo contacto");
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		setLayout(null);
+		setSize(300, 300);	
+		
+		this.controlador = controlador;
+		controladorContacto = new ControladorContacto(this, controlador);
+		
+		setLocationRelativeTo(null);
+		
+		
+		
+		secondAction = action;
+		init();
+		
+		
+		setVisible(true);
+	}
+
 	
 	private void init() {
 		ImageIcon iconName = changeIcon(new ImageIcon("images/person.png"), Color.black, 50);
@@ -68,17 +77,17 @@ public class VistaContacto extends JDialog {
 		buttonOK.setBounds(20, 200, 120, 50);
 		add(buttonOK);
 		
-		buttonCancel = new JButton("Cancelar");
-		buttonCancel.setName("cancelar");
-		buttonCancel.setBounds(getWidth() - 120 - 20 - 10, 200, 120, 50);
-		add(buttonCancel);
+		buttonSecondary = new JButton(secondAction.substring(0,1).toUpperCase() + secondAction.substring(1));
+		buttonSecondary.setName(secondAction);
+		buttonSecondary.setBounds(getWidth() - 120 - 20 - 10, 200, 120, 50);
+		add(buttonSecondary);
 		
 		GradientPanel gradientPanel = new  GradientPanel(GradientPanel.edixC2, GradientPanel.edixC1, .3f);
 		gradientPanel.setSize(getWidth(), getHeight());
 		add(gradientPanel);
 		
-		buttonOK.addActionListener(controlador);
-		buttonCancel.addActionListener(controlador);
+		buttonOK.addActionListener(controladorContacto);
+		buttonSecondary.addActionListener(controladorContacto);
 		
 	}
 	
@@ -124,11 +133,11 @@ public class VistaContacto extends JDialog {
 	}
 
 	public JButton getButtonCancel() {
-		return buttonCancel;
+		return buttonSecondary;
 	}
 
 	public void setButtonCancel(JButton buttonCancel) {
-		this.buttonCancel = buttonCancel;
+		this.buttonSecondary = buttonCancel;
 	}
 
 	
@@ -156,6 +165,4 @@ public class VistaContacto extends JDialog {
         // Crear y devolver un nuevo ImageIcon con la imagen modificada
         return new ImageIcon(imagenModificada);
     }
-	
-
 }

@@ -227,4 +227,5 @@ public class Vista extends JFrame{
 		buttonEdit.setEnabled(true);
 		buttonDelete.setEnabled(true);
 	}
+
 }

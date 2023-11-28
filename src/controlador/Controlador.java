@@ -27,32 +27,37 @@ public class Controlador implements ActionListener {
 	public Controlador(VistaContacto vistaContacto) {
 		this.vistaContacto=vistaContacto;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		JButton button = (JButton) e.getSource();
 		//String selectedButton = button.getText();
-		String selectedButton = button.getName();
+		String idBtn = button.getName();
 		
 		System.out.println("Boton presionado: " + button.getName());
 		
-		
-		
-		switch(selectedButton) {
+		switch(idBtn) {
 			case "añadir":
 				vista.disableButtons();
-				vistaContacto = new VistaContacto(this);
+				vistaContacto = new VistaContacto(this, "limpiar");
 				break;				
 			case "editar":
 				if (vista.getTable().getSelectedRow()!=-1) {
 					vista.disableButtons();
 					editMode=true;
-					vistaContacto = new VistaContacto(this);
+					vistaContacto = new VistaContacto(this, "recuperar");
 					vistaContacto.setTitle("Editar contacto");
 					row = vista.getTable().getSelectedRow();
-					vistaContacto.getFieldName().setText((String) vista.getTable().getValueAt(row,0));
-					vistaContacto.getFieldPhone().setText((String) vista.getTable().getValueAt(row,1));
+					
+					String nam = (String) vista.getTable().getValueAt(row,0);
+					String ph = (String) vista.getTable().getValueAt(row,1);
+					
+					vistaContacto.getFieldName().setText(nam);
+					vistaContacto.getFieldPhone().setText(ph);					
+					vistaContacto.getControladorContacto().setNombre(nam);
+					vistaContacto.getControladorContacto().setTelefono(ph);
+					
 				}else {
 					JOptionPane.showMessageDialog(null, "Selecciona un contacto", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -67,21 +72,7 @@ public class Controlador implements ActionListener {
 				break;
 				
 			case "ok":
-				vista.enableButtons();
-				if (!editMode) {
-					if (!validationName(vistaContacto.getFieldName().getText()) && !validationPhone(vistaContacto.getFieldPhone().getText())) {
-						vista.getTableModel().addRow(new String[] {vistaContacto.getFieldName().getText(), vistaContacto.getFieldPhone().getText()});
-						vistaContacto.dispose();
-						editMode=false;
-					}
-				}else {
-					if (!validationName(vistaContacto.getFieldName().getText()) && !validationPhone(vistaContacto.getFieldPhone().getText())) {
-						vista.getTable().setValueAt(vistaContacto.getFieldName().getText(),row,0);
-						vista.getTable().setValueAt(vistaContacto.getFieldPhone().getText(),row,1);
-						vistaContacto.dispose();
-						editMode=false;
-					}
-				}
+				setOK();
 				break;
 				
 			case "cancelar":
@@ -116,4 +107,23 @@ public class Controlador implements ActionListener {
 		else vista.disableButtons();
 	}
 
+	public void setOK() {
+		vista.enableButtons();
+		if (!editMode) {
+			if (!validationName(vistaContacto.getFieldName().getText()) && !validationPhone(vistaContacto.getFieldPhone().getText())) {
+				vista.getTableModel().addRow(new String[] {vistaContacto.getFieldName().getText(), vistaContacto.getFieldPhone().getText()});
+				vistaContacto.dispose();
+				editMode=false;
+			}
+		}else {
+			if (!validationName(vistaContacto.getFieldName().getText()) && !validationPhone(vistaContacto.getFieldPhone().getText())) {
+				vista.getTable().setValueAt(vistaContacto.getFieldName().getText(),row,0);
+				vista.getTable().setValueAt(vistaContacto.getFieldPhone().getText(),row,1);
+				vistaContacto.dispose();
+				editMode=false;
+			}
+		}
+	}
+
+	
 }

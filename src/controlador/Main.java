@@ -1,8 +1,6 @@
 package controlador;
 
-import java.awt.Color;
 import java.util.List;
-
 import modelo.Contacto;
 import modelo.ListaContactos;
 import vista.Vista;
@@ -20,6 +18,8 @@ public class Main {
 		for (Contacto contacto : listaContactos) {
 			vista.getTableModel().addRow(new String[] {contacto.getName(),contacto.getPhone()});
 		}
+		ReproducirSonido rs = new ReproducirSonido();
+		rs.reproducirSonido();
 	}
 
 }

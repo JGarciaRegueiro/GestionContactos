@@ -16,6 +16,7 @@ public class Controlador implements ActionListener {
 
 	Vista vista;
 	VistaContacto vistaContacto;
+	ReproducirSonido rs = new ReproducirSonido();
 	Contacto contacto = new Contacto("","");
 	boolean editMode = false;
 	int row;
@@ -36,6 +37,7 @@ public class Controlador implements ActionListener {
 		String idBtn = button.getName();
 		
 		System.out.println("Boton presionado: " + button.getName());
+		rs.reproducirClick();
 		
 		switch(idBtn) {
 			case "añadir":

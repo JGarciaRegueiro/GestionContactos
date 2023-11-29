@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -23,7 +22,7 @@ public class ControladorContacto implements ActionListener {
 
 	VistaContacto vista;
 	Controlador controlador;
-	
+	ReproducirSonido rs = new ReproducirSonido();
 	String nombre;
 	String telefono;
 
@@ -52,7 +51,7 @@ public class ControladorContacto implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		rs.reproducirClick();
 		JButton button = (JButton) e.getSource();
 		//String selectedButton = button.getText();
 		String idBtn = button.getName();

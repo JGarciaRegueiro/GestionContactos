@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -44,6 +45,7 @@ public class VistaContacto extends JDialog {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setLayout(null);
 		setSize(300, 300);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("images/contacts.png"));
 
 		this.controlador = controlador;
 		controladorContacto = new ControladorContacto(this, controlador);

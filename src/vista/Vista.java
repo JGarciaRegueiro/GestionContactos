@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
+import java.io.File;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -78,10 +80,13 @@ public class Vista extends JFrame{
 	private void init() {	
 		System.out.println("w: " + getWidth());
 		System.out.println("h: " + getHeight());
+		
+		Font googleFont = loadCustomFont("fonts\\google.ttf");
+		Font lobsterFont = loadCustomFont("fonts\\lobster.ttf");
 				
 		titleLabel = new JLabel("Mis Contactos");
-		titleLabel.setForeground(Color.black);
-		titleLabel.setFont(new Font("SansSerif", Font.BOLD, 45));
+		titleLabel.setForeground(Color.white);
+	    titleLabel.setFont(googleFont.deriveFont(Font.PLAIN, 40));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setBounds(0, 0, getWidth() - 10, 50);
 		add(titleLabel);
@@ -110,9 +115,10 @@ public class Vista extends JFrame{
 		};
 		
 		table = new JTable(tableModel);
+		table.getTableHeader().setFont(lobsterFont.deriveFont(Font.PLAIN, 15));
 			
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(40, 60, getWidth()-90, 450);
+		scrollPane.setBounds(40, 60, getWidth()-90, 450);;
 		add(scrollPane);		
 	
 		GradientPanel gradientPanel = new GradientPanel(GradientPanel.edixC1, GradientPanel.edixC2,.3f);		
@@ -126,6 +132,18 @@ public class Vista extends JFrame{
 		buttonDelete.addActionListener(controlador);
 		buttonEdit.addActionListener(controlador);
 	}
+	
+	 private Font loadCustomFont(String fontPath) {
+         try {
+             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+             return customFont.deriveFont(Font.PLAIN, 14); // Puedes ajustar el estilo y el tamaño según tus necesidades
+ 
+         } catch (Exception e) {
+             System.out.println("Error de lectura de fuente: " + e.getMessage());
+             e.printStackTrace();
+             return null;
+         }
+     }
 	
 	//Getters & Setters
 	public JButton getButtonAdd() {

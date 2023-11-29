@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -52,7 +53,7 @@ public class Vista extends JFrame{
 		
 		setTitle("Mis contactos");
 		setSize(400, 700);
-		//getContentPane().setBackground(Color.white);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("images\\contacts.png"));
 		
 		init();
 		

@@ -45,7 +45,7 @@ public class VistaContacto extends JDialog {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setLayout(null);
 		setSize(300, 300);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("images/contacts.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("images\\contacts.png"));
 
 		this.controlador = controlador;
 		controladorContacto = new ControladorContacto(this, controlador);

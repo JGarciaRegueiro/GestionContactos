@@ -2,11 +2,8 @@ package vista;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -14,11 +11,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -26,16 +21,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-
 import controlador.Controlador;
-import controlador.Main;
 import modelo.Contacto;
 import modelo.ListaContactos;
 
@@ -44,22 +34,20 @@ public class Vista extends JFrame{
 	JLabel titleLabel; 
 	JButton buttonAdd, buttonDelete, buttonEdit;
 	JTable table;
+
 	DefaultTableModel tableModel;
 	JScrollPane scrollPane;
+	
 	List<Contacto> listaContactos = new ArrayList<>();
 	
-
-	
-	
-	public Vista() {
-				
+	public Vista() {				
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 		setResizable(false);
 		
 		setTitle("Mis contactos");
 		setSize(400, 700);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\images\\contacts.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("images/contacts.png"));
 		
 		init();
 		
@@ -84,12 +72,30 @@ public class Vista extends JFrame{
 		setVisible(true);
 	}
 	
-	private void init() {	
-		Font googleFont = null;
-		Font lobsterFont = null;
+	private Font getFont(String path) {
 		try {
-			String fontPath = "C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\fonts\\google.ttf";
-			String fontPath2 = "C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\fonts\\lobster.ttf";
+			File file = new File(path);
+			Font font = Font.createFont(Font.TRUETYPE_FONT, file);
+			
+			return font;
+		} catch (FontFormatException e) {
+			
+			System.out.println("La fuente no está en formato correcto");
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return new Font("SansSerif", Font.PLAIN, 12);
+	}
+	
+	private void init() {	
+		/*Font googleFont = null;
+		Font lobsterFont = null;
+		
+		try {
+			String fontPath = "fonts\\google.ttf";
+			String fontPath2 = "fonts\\lobster.ttf";
 			
 			File fontFile = new File(fontPath);
 			File fontFile2 = new File(fontPath2);
@@ -97,13 +103,15 @@ public class Vista extends JFrame{
 			googleFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 			lobsterFont = Font.createFont(Font.TRUETYPE_FONT, fontFile2);
 		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
-		}
-				
+		}*/
+		Font googleFont = getFont("fonts\\google.ttf");
+		Font lobsterFont = getFont("fonts\\lobster.ttf");;
+		
 		titleLabel = new JLabel("Mis Contactos");
 		titleLabel.setForeground(Color.white);
 	    titleLabel.setFont(googleFont.deriveFont(Font.PLAIN, 40));
@@ -153,6 +161,7 @@ public class Vista extends JFrame{
 		buttonEdit.addActionListener(controlador);
 	}
 	
+	/*
 	 private Font loadCustomFont(String fontPath) {
          try {
              Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
@@ -164,6 +173,7 @@ public class Vista extends JFrame{
              return null;
          }
      }
+	*/
 	
 	//Getters & Setters
 	public JButton getButtonAdd() {
@@ -220,6 +230,27 @@ public class Vista extends JFrame{
             ClassLoader classLoader = getClass().getClassLoader();
             URL imageUrl = classLoader.getResource(path);
 
+            // Cargar la imagen desde la URL
+            BufferedImage imagenOriginal = ImageIO.read(imageUrl);
+
+            // Escalar la imagen al tamaño deseado
+            Image imagenEscalada = imagenOriginal.getScaledInstance(size, size, Image.SCALE_SMOOTH);
+
+            // Crear un ImageIcon con la imagen escalada
+            ImageIcon icon = new ImageIcon(imagenEscalada);
+
+            // Cambiar el color del icono
+            icon = changeColorIcon(icon, color);
+
+            // Crear y configurar el botón
+            JButton button = new JButton(icon);
+            button.setName(id);
+            button.setOpaque(false);
+            button.setContentAreaFilled(false);
+            button.setBorderPainted(false);
+
+            return button;
+            /*
             if (imageUrl != null) {
                 // Cargar la imagen desde la URL
                 BufferedImage imagenOriginal = ImageIO.read(imageUrl);
@@ -245,8 +276,14 @@ public class Vista extends JFrame{
                 System.err.println("No se pudo cargar la imagen: " + path);
                 return null; // Manejar el error según tus necesidades
             }
-
-        } catch (IOException e) {
+*/
+        } catch (IllegalArgumentException iae) {
+			// TODO: handle exception
+        	System.err.println("No se pudo cargar la imagen: " + path);
+        	return null;
+		} 
+        
+        catch (IOException e) {
             e.printStackTrace();
             return null; // Manejar el error según tus necesidades
         }
@@ -254,8 +291,7 @@ public class Vista extends JFrame{
 	
 	
 	public static ImageIcon changeColorIcon(ImageIcon iconoOriginal, Color colorNuevo) {
-        // Crear una imagen con el mismo tamaño que el icono original
-		
+        // Crear una imagen con el mismo tamaño que el icono original		
         BufferedImage imagenModificada = new BufferedImage(
                 iconoOriginal.getIconWidth(),
                 iconoOriginal.getIconHeight(),
@@ -264,7 +300,7 @@ public class Vista extends JFrame{
         // Obtener el contexto gráfico de la imagen
         Graphics2D g = imagenModificada.createGraphics();
 
-        // Dibujar el icono original en la imagen con el nuevo color
+        // Dibujar el icono original en la imagen con el nuevo color    
         g.drawImage(iconoOriginal.getImage(), 0, 0, null);
         g.setComposite(AlphaComposite.SrcAtop);
         g.setColor(colorNuevo);

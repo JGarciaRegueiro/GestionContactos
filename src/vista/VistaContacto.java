@@ -118,7 +118,7 @@ public class VistaContacto extends JDialog {
 	}
 
 	private void init() {
-		
+
 		ImageIcon iconName = changeIcon(loadIcon("person.png"), Color.black, 50);
 		ImageIcon iconPhone = changeIcon(loadIcon("phone.png"), Color.black, 50);
 
@@ -129,11 +129,11 @@ public class VistaContacto extends JDialog {
 		fieldName = new JTextField();
 		fieldName.setBounds(80, 30, getWidth() - 120, 30);
 		add(fieldName);
-		
+
 		wrongName = buildWrongTextArea("");
 		wrongName.setBounds(80, 60, 180, 40);
 		add(wrongName);
-		
+
 		labelPhone = new JLabel(iconPhone);
 		labelPhone.setBounds(20, 100, 50, 50);
 		add(labelPhone);
@@ -145,7 +145,7 @@ public class VistaContacto extends JDialog {
 		wrongPhone = buildWrongTextArea("");
 		wrongPhone.setBounds(80, 140, 180, 40);
 		add(wrongPhone);
-		
+
 		buttonOK = new JButton("OK");
 		buttonOK.setName("ok");
 		buttonOK.setBounds(20, 200, 120, 50);
@@ -156,9 +156,10 @@ public class VistaContacto extends JDialog {
 		buttonSecondary.setBounds(getWidth() - 120 - 20 - 10, 200, 120, 50);
 		add(buttonSecondary);
 
-		//GradientPanel gradientPanel = new GradientPanel(GradientPanel.edixC2, GradientPanel.edixC1, .3f);
-		//gradientPanel.setSize(getWidth(), getHeight());
-		//add(gradientPanel);
+		// GradientPanel gradientPanel = new GradientPanel(GradientPanel.edixC2,
+		// GradientPanel.edixC1, .3f);
+		// gradientPanel.setSize(getWidth(), getHeight());
+		// add(gradientPanel);
 
 		buttonOK.addActionListener(controladorContacto);
 		buttonSecondary.addActionListener(controladorContacto);
@@ -167,48 +168,56 @@ public class VistaContacto extends JDialog {
 		int borderSize = 3;
 		fieldName.setName("name");
 		fieldPhone.setName("phone");
-		fieldName.getDocument().addDocumentListener(
-				controladorContacto.getDocumentListener(fieldName, wrongName));
-		fieldPhone.getDocument().addDocumentListener(
-				controladorContacto.getDocumentListener(fieldPhone, wrongPhone));
+		fieldName.getDocument().addDocumentListener(controladorContacto.getDocumentListener(fieldName, wrongName));
+		fieldPhone.getDocument().addDocumentListener(controladorContacto.getDocumentListener(fieldPhone, wrongPhone));
 	}
-	
+
 	private ImageIcon loadIcon(String filename) {
-	    try {
-	        // Obtener la URL de la imagen desde el ClassLoader
-	        ClassLoader classLoader = getClass().getClassLoader();
-	        URL imageUrl = classLoader.getResource(filename);
+		try {
+			// Obtener la URL de la imagen desde el ClassLoader
+			ClassLoader classLoader = getClass().getClassLoader();
+			URL imageUrl = classLoader.getResource(filename);
 
-	        if (imageUrl != null) {
-	            // Cargar la imagen desde la URL
-	            Image image = Toolkit.getDefaultToolkit().getImage(imageUrl);
+			// Cargar la imagen desde la URL
+			Image image = Toolkit.getDefaultToolkit().getImage(imageUrl);
 
-	            // Devolver un ImageIcon creado con la imagen
-	            return new ImageIcon(image);
-	        } else {
-	            System.err.println("No se pudo cargar la imagen: " + filename);
-	            // Manejar el error según tus necesidades
-	            return null;
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return null;
-	    }
+			// Devolver un ImageIcon creado con la imagen
+			return new ImageIcon(image);
+			/*
+			if (imageUrl != null) {
+				// Cargar la imagen desde la URL
+				Image image = Toolkit.getDefaultToolkit().getImage(imageUrl);
+
+				// Devolver un ImageIcon creado con la imagen
+				return new ImageIcon(image);
+			} else {
+				System.err.println("No se pudo cargar la imagen: " + filename);
+				// Manejar el error según tus necesidades
+				return null;
+			}*/
+		} catch (NullPointerException npe) {
+			System.err.println("No se pudo cargar la imagen: " + filename);
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private JTextArea buildWrongTextArea(String str) {
-		JTextArea j = new JTextArea(str);	
-		
+		JTextArea j = new JTextArea(str);
+
 		j.setForeground(Color.red);
 		j.setFont(new Font("SansSerif", Font.PLAIN, 10));
 
 		j.setLineWrap(true);
-		j.setWrapStyleWord(true);		
+		j.setWrapStyleWord(true);
 		j.setBackground(null);
-		
+		j.setEditable(false);
+
 		return j;
 	}
-	
+
 	public static ImageIcon changeIcon(ImageIcon iconoOriginal, Color colorNuevo, int size) {
 		// Crear una imagen con el mismo tamaño que el icono original
 		iconoOriginal = new ImageIcon(iconoOriginal.getImage().getScaledInstance(size, size, 500));

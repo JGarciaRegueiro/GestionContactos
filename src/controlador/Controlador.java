@@ -18,6 +18,7 @@ public class Controlador implements ActionListener {
 	VistaContacto vistaContacto;
 	ReproducirSonido rs = new ReproducirSonido();
 	Contacto contacto = new Contacto("","");
+	
 	boolean editMode = false;
 	int row;
 	

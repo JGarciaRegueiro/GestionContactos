@@ -112,6 +112,7 @@ public class Vista extends JFrame{
 		Font googleFont = getFont("fonts\\google.ttf");
 		Font lobsterFont = getFont("fonts\\lobster.ttf");;
 		
+
 		titleLabel = new JLabel("Mis Contactos");
 		titleLabel.setForeground(Color.white);
 	    titleLabel.setFont(googleFont.deriveFont(Font.PLAIN, 40));
@@ -174,6 +175,7 @@ public class Vista extends JFrame{
          }
      }
 	*/
+
 	
 	//Getters & Setters
 	public JButton getButtonAdd() {

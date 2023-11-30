@@ -6,11 +6,13 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -116,8 +118,9 @@ public class VistaContacto extends JDialog {
 	}
 
 	private void init() {
-		ImageIcon iconName = changeIcon(new ImageIcon("images/person.png"), Color.black, 50);
-		ImageIcon iconPhone = changeIcon(new ImageIcon("images/phone.png"), Color.black, 50);
+		
+		ImageIcon iconName = changeIcon(loadIcon("person.png"), Color.black, 50);
+		ImageIcon iconPhone = changeIcon(loadIcon("phone.png"), Color.black, 50);
 
 		labelName = new JLabel(iconName);
 		labelName.setBounds(20, 20, 50, 50);
@@ -168,6 +171,29 @@ public class VistaContacto extends JDialog {
 				controladorContacto.getDocumentListener(fieldName, wrongName));
 		fieldPhone.getDocument().addDocumentListener(
 				controladorContacto.getDocumentListener(fieldPhone, wrongPhone));
+	}
+	
+	private ImageIcon loadIcon(String filename) {
+	    try {
+	        // Obtener la URL de la imagen desde el ClassLoader
+	        ClassLoader classLoader = getClass().getClassLoader();
+	        URL imageUrl = classLoader.getResource(filename);
+
+	        if (imageUrl != null) {
+	            // Cargar la imagen desde la URL
+	            Image image = Toolkit.getDefaultToolkit().getImage(imageUrl);
+
+	            // Devolver un ImageIcon creado con la imagen
+	            return new ImageIcon(image);
+	        } else {
+	            System.err.println("No se pudo cargar la imagen: " + filename);
+	            // Manejar el error según tus necesidades
+	            return null;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
 
 	private JTextArea buildWrongTextArea(String str) {

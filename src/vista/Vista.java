@@ -4,9 +4,11 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -15,8 +17,11 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
-
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -47,13 +52,14 @@ public class Vista extends JFrame{
 	
 	
 	public Vista() {
+				
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 		setResizable(false);
 		
 		setTitle("Mis contactos");
 		setSize(400, 700);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("images\\contacts.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\images\\contacts.png"));
 		
 		init();
 		
@@ -79,11 +85,24 @@ public class Vista extends JFrame{
 	}
 	
 	private void init() {	
-		System.out.println("w: " + getWidth());
-		System.out.println("h: " + getHeight());
-		
-		Font googleFont = loadCustomFont("fonts\\google.ttf");
-		Font lobsterFont = loadCustomFont("fonts\\lobster.ttf");
+		Font googleFont = null;
+		Font lobsterFont = null;
+		try {
+			String fontPath = "C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\fonts\\google.ttf";
+			String fontPath2 = "C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\fonts\\lobster.ttf";
+			
+			File fontFile = new File(fontPath);
+			File fontFile2 = new File(fontPath2);
+			
+			googleFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+			lobsterFont = Font.createFont(Font.TRUETYPE_FONT, fontFile2);
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				
 		titleLabel = new JLabel("Mis Contactos");
 		titleLabel.setForeground(Color.white);
@@ -95,15 +114,15 @@ public class Vista extends JFrame{
 		Color cButton = Color.black;
 		int sizeBtn = 65;
 		
-		buttonAdd = createButton("añadir", "images/person_add.png", cButton, sizeBtn);
+		buttonAdd = createButton("añadir", "person_add.png", cButton, sizeBtn);
 		buttonAdd.setBounds(40, 550, 75, 75);		
 		add(buttonAdd);
 
-		buttonDelete = createButton("eliminar", "images/person_remove.png", cButton, sizeBtn);
+		buttonDelete = createButton("eliminar", "person_remove.png", cButton, sizeBtn);
 		buttonDelete.setBounds(155, 550, 75, 75);
 		add(buttonDelete);
 
-		buttonEdit = createButton("editar", "images/edit.png", cButton, sizeBtn);
+		buttonEdit = createButton("editar", "edit.png", cButton, sizeBtn);
 		buttonEdit.setBounds(265, 550, 75, 75);
 		add(buttonEdit);
 
@@ -196,19 +215,42 @@ public class Vista extends JFrame{
 	}
 	
 	private JButton createButton(String id, String path, Color color, int size) {
-		ImageIcon icon = new ImageIcon(path);		
-		icon = new ImageIcon(icon.getImage().getScaledInstance(size, size, 500));		
-		
-		JButton button = new JButton(changeColorIcon(icon, color));		
-		
-		button.setName(id);
-		
-		button.setOpaque(false);
-		button.setContentAreaFilled(false);
-		button.setBorderPainted(false);
-		
-		return button;
-	}
+        try {
+            // Obtener la URL de la imagen desde el ClassLoader
+            ClassLoader classLoader = getClass().getClassLoader();
+            URL imageUrl = classLoader.getResource(path);
+
+            if (imageUrl != null) {
+                // Cargar la imagen desde la URL
+                BufferedImage imagenOriginal = ImageIO.read(imageUrl);
+
+                // Escalar la imagen al tamaño deseado
+                Image imagenEscalada = imagenOriginal.getScaledInstance(size, size, Image.SCALE_SMOOTH);
+
+                // Crear un ImageIcon con la imagen escalada
+                ImageIcon icon = new ImageIcon(imagenEscalada);
+
+                // Cambiar el color del icono
+                icon = changeColorIcon(icon, color);
+
+                // Crear y configurar el botón
+                JButton button = new JButton(icon);
+                button.setName(id);
+                button.setOpaque(false);
+                button.setContentAreaFilled(false);
+                button.setBorderPainted(false);
+
+                return button;
+            } else {
+                System.err.println("No se pudo cargar la imagen: " + path);
+                return null; // Manejar el error según tus necesidades
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // Manejar el error según tus necesidades
+        }
+    }
 	
 	
 	public static ImageIcon changeColorIcon(ImageIcon iconoOriginal, Color colorNuevo) {

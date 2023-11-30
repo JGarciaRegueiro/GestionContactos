@@ -3,6 +3,7 @@ package controlador;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -15,17 +16,30 @@ public class ReproducirSonido {
 	private Clip clip;
 	private Clip clip2;
 
-    public ReproducirSonido() {
-     
+	public ReproducirSonido() {
         try {
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("sounds\\wow.wav"));
-            BufferedInputStream bufferedInputStream2 = new BufferedInputStream(new FileInputStream("sounds\\click.wav"));
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedInputStream);
-            AudioInputStream audioInputStream2 = AudioSystem.getAudioInputStream(bufferedInputStream2);
-            clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip2 = AudioSystem.getClip();
-            clip2.open(audioInputStream2);
+            // Obtener las rutas de los archivos de sonido desde el JAR
+            InputStream wowInputStream = getClass().getResourceAsStream("/wow.wav");
+            InputStream clickInputStream = getClass().getResourceAsStream("/click.wav");
+
+            // Verificar que se hayan cargado los archivos de sonido correctamente
+            if (wowInputStream != null && clickInputStream != null) {
+                BufferedInputStream bufferedWowStream = new BufferedInputStream(wowInputStream);
+                BufferedInputStream bufferedClickStream = new BufferedInputStream(clickInputStream);
+
+                AudioInputStream audioWowInputStream = AudioSystem.getAudioInputStream(bufferedWowStream);
+                AudioInputStream audioClickInputStream = AudioSystem.getAudioInputStream(bufferedClickStream);
+
+                clip = AudioSystem.getClip();
+                clip.open(audioWowInputStream);
+
+                clip2 = AudioSystem.getClip();
+                clip2.open(audioClickInputStream);
+            } else {
+                System.err.println("No se pudieron cargar los archivos de sonido.");
+                // Manejar el error según tus necesidades
+            }
+
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         } catch (Exception e) {

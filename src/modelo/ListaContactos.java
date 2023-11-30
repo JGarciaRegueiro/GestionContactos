@@ -12,7 +12,7 @@ public class ListaContactos {
 	
 	public static void guardarContactos(List<Contacto> listaContactos) {
 		
-		 try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\contactos.txt"))) {
+		 try (BufferedWriter writer = new BufferedWriter(new FileWriter("contactos.txt"))) {
             for(Contacto contacto : listaContactos) {
             	writer.write(contacto.getName() + "," + contacto.getPhone());
             	writer.newLine();
@@ -24,7 +24,7 @@ public class ListaContactos {
 	
 	public static List<Contacto> cargarContactos(){
         List<Contacto> contactos = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\contactos.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("contactos.txt"))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
                 String[] partes = linea.split(",");
@@ -34,7 +34,7 @@ public class ListaContactos {
                     contactos.add(new Contacto(name, phone));
                 }
             }
-            System.out.println("Contactos cargados exitosamente desde " + "C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\contactos.txt");
+            System.out.println("Contactos cargados exitosamente desde " + "contactos.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }

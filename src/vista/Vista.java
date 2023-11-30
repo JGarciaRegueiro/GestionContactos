@@ -84,25 +84,10 @@ public class Vista extends JFrame{
 		setVisible(true);
 	}
 	
-	private void init() {	
-		Font googleFont = null;
-		Font lobsterFont = null;
-		try {
-			String fontPath = "C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\fonts\\google.ttf";
-			String fontPath2 = "C:\\Users\\Jorge\\eclipse-workspace\\GestionContactos\\fonts\\lobster.ttf";
-			
-			File fontFile = new File(fontPath);
-			File fontFile2 = new File(fontPath2);
-			
-			googleFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-			lobsterFont = Font.createFont(Font.TRUETYPE_FONT, fontFile2);
-		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private void init() {
+		
+		Font googleFont = loadCustomFont("/google.ttf");
+        Font lobsterFont = loadCustomFont("/lobster.ttf");
 				
 		titleLabel = new JLabel("Mis Contactos");
 		titleLabel.setForeground(Color.white);
@@ -153,17 +138,24 @@ public class Vista extends JFrame{
 		buttonEdit.addActionListener(controlador);
 	}
 	
-	 private Font loadCustomFont(String fontPath) {
-         try {
-             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
-             return customFont.deriveFont(Font.PLAIN, 14); // Puedes ajustar el estilo y el tamaño según tus necesidades
- 
-         } catch (Exception e) {
-             System.out.println("Error de lectura de fuente: " + e.getMessage());
-             e.printStackTrace();
-             return null;
-         }
-     }
+	private Font loadCustomFont(String fontPath) {
+        try (InputStream fontStream = getClass().getResourceAsStream(fontPath)) {
+            if (fontStream == null) {
+                // Mejorar el mensaje de error con información sobre la ruta
+                throw new IOException("Font file not found: " + fontPath);
+            }
+
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+            System.out.println("Fuente cargada: " + customFont.getFontName());
+            return customFont.deriveFont(Font.PLAIN, 14);
+
+        } catch (Exception e) {
+            // Mejorar el mensaje de error con información específica sobre la excepción
+            System.out.println("Error de lectura de fuente: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
 	
 	//Getters & Setters
 	public JButton getButtonAdd() {

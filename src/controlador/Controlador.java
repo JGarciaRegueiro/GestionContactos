@@ -34,7 +34,6 @@ public class Controlador implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		JButton button = (JButton) e.getSource();
-		//String selectedButton = button.getText();
 		String idBtn = button.getName();
 		
 		System.out.println("Boton presionado: " + button.getName());
@@ -73,10 +72,7 @@ public class Controlador implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Selecciona un contacto", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 				}
 				break;
-				
-			//case "ok":
-				//setOK();
-				//break;				
+								
 			case "cancelar":
 				vista.enableButtons();
 				vistaContacto.dispose();

@@ -53,7 +53,6 @@ public class ControladorContacto implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		rs.reproducirClick();
 		JButton button = (JButton) e.getSource();
-		//String selectedButton = button.getText();
 		String idBtn = button.getName();
 		
 		System.out.println("Boton presionado: " + button.getName());

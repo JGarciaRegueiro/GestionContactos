@@ -12,8 +12,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -47,13 +47,14 @@ public class Vista extends JFrame{
 		
 		setTitle("Mis contactos");
 		setSize(400, 700);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("images/contacts.png"));
+		ImageIcon icon = new ImageIcon(getClass().getResource("/contacts.png"));
+        setIconImage(icon.getImage());
 		
 		init();
 		
 		setLocationRelativeTo(null);
 		
-		//Dejo aquí el control de cierre para guardar los datos
+		//aquí el control de cierre para guardar los datos
 		addWindowListener(new WindowAdapter(){ 
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -62,7 +63,7 @@ public class Vista extends JFrame{
 				        String phone = (String) tableModel.getValueAt(row,1);
 				        Contacto contacto = new Contacto(name,phone);
 				        listaContactos.add(contacto);
-				        System.out.print(contacto + "\t"); // Haces algo con el valor de la celda (en este caso, imprimirlo)
+				        System.out.print(contacto + "\t"); // Acción con el valor de la celda (en este caso, imprimirlo)
 				    System.out.println(); // Salto de línea al final de cada fila
 				}
 				ListaContactos.guardarContactos(listaContactos);
@@ -72,52 +73,28 @@ public class Vista extends JFrame{
 		setVisible(true);
 	}
 	
-	private Font getFont(String path) {
-		try {
-			File file = new File(path);
-			Font font = Font.createFont(Font.TRUETYPE_FONT, file);
-			
-			return font;
-		} catch (FontFormatException e) {
-			
-			System.out.println("La fuente no está en formato correcto");
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-		
-		return new Font("SansSerif", Font.PLAIN, 12);
-	}
 	
 	private void init() {	
-		/*Font googleFont = null;
-		Font lobsterFont = null;
 		
+		Font googleFont = null;
+		Font lobsterFont = null;
+
 		try {
-			String fontPath = "fonts\\google.ttf";
-			String fontPath2 = "fonts\\lobster.ttf";
-			
-			File fontFile = new File(fontPath);
-			File fontFile2 = new File(fontPath2);
-			
-			googleFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-			lobsterFont = Font.createFont(Font.TRUETYPE_FONT, fontFile2);
-		} catch (FontFormatException e) {
-			
-			e.printStackTrace();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}*/
-		Font googleFont = getFont("fonts\\google.ttf");
-		Font lobsterFont = getFont("fonts\\lobster.ttf");;
+		    InputStream googleFontStream = getClass().getResourceAsStream("/google.ttf");
+		    InputStream lobsterFontStream = getClass().getResourceAsStream("/lobster.ttf");
+
+		    googleFont = Font.createFont(Font.TRUETYPE_FONT, googleFontStream);
+		    lobsterFont = Font.createFont(Font.TRUETYPE_FONT, lobsterFontStream);
+		} catch (FontFormatException | IOException e) {
+		    e.printStackTrace();
+		}
 		
 
 		titleLabel = new JLabel("Mis Contactos");
 		titleLabel.setForeground(Color.white);
 	    titleLabel.setFont(googleFont.deriveFont(Font.PLAIN, 40));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setBounds(0, 0, getWidth() - 10, 50);
+		titleLabel.setBounds(0, 30, getWidth() - 10, 50);
 		add(titleLabel);
 		
 		Color cButton = Color.black;
@@ -147,7 +124,7 @@ public class Vista extends JFrame{
 		table.getTableHeader().setFont(lobsterFont.deriveFont(Font.PLAIN, 15));
 			
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(40, 60, getWidth()-90, 450);;
+		scrollPane.setBounds(40, 90, getWidth()-90, 450);;
 		add(scrollPane);		
 	
 		GradientPanel gradientPanel = new GradientPanel(GradientPanel.edixC1, GradientPanel.edixC2,.3f);		
@@ -161,20 +138,6 @@ public class Vista extends JFrame{
 		buttonDelete.addActionListener(controlador);
 		buttonEdit.addActionListener(controlador);
 	}
-	
-	/*
-	 private Font loadCustomFont(String fontPath) {
-         try {
-             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
-             return customFont.deriveFont(Font.PLAIN, 14); // Puedes ajustar el estilo y el tamaño según tus necesidades
- 
-         } catch (Exception e) {
-             System.out.println("Error de lectura de fuente: " + e.getMessage());
-             e.printStackTrace();
-             return null;
-         }
-     }
-	*/
 
 	
 	//Getters & Setters
@@ -252,33 +215,6 @@ public class Vista extends JFrame{
             button.setBorderPainted(false);
 
             return button;
-            /*
-            if (imageUrl != null) {
-                // Cargar la imagen desde la URL
-                BufferedImage imagenOriginal = ImageIO.read(imageUrl);
-
-                // Escalar la imagen al tamaño deseado
-                Image imagenEscalada = imagenOriginal.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-
-                // Crear un ImageIcon con la imagen escalada
-                ImageIcon icon = new ImageIcon(imagenEscalada);
-
-                // Cambiar el color del icono
-                icon = changeColorIcon(icon, color);
-
-                // Crear y configurar el botón
-                JButton button = new JButton(icon);
-                button.setName(id);
-                button.setOpaque(false);
-                button.setContentAreaFilled(false);
-                button.setBorderPainted(false);
-
-                return button;
-            } else {
-                System.err.println("No se pudo cargar la imagen: " + path);
-                return null; // Manejar el error según tus necesidades
-            }
-*/
         } catch (IllegalArgumentException iae) {
 			// TODO: handle exception
         	System.err.println("No se pudo cargar la imagen: " + path);

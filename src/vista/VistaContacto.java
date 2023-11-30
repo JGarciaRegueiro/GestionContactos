@@ -47,7 +47,8 @@ public class VistaContacto extends JDialog {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setLayout(null);
 		setSize(300, 300);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("images\\contacts.png"));
+		ImageIcon icon = new ImageIcon(getClass().getResource("/contacts.png"));
+        setIconImage(icon.getImage());
 
 		this.controlador = controlador;
 		controladorContacto = new ControladorContacto(this, controlador);
@@ -156,15 +157,9 @@ public class VistaContacto extends JDialog {
 		buttonSecondary.setBounds(getWidth() - 120 - 20 - 10, 200, 120, 50);
 		add(buttonSecondary);
 
-		// GradientPanel gradientPanel = new GradientPanel(GradientPanel.edixC2,
-		// GradientPanel.edixC1, .3f);
-		// gradientPanel.setSize(getWidth(), getHeight());
-		// add(gradientPanel);
-
 		buttonOK.addActionListener(controladorContacto);
 		buttonSecondary.addActionListener(controladorContacto);
 
-		// Pruebas
 		int borderSize = 3;
 		fieldName.setName("name");
 		fieldPhone.setName("phone");
@@ -183,18 +178,6 @@ public class VistaContacto extends JDialog {
 
 			// Devolver un ImageIcon creado con la imagen
 			return new ImageIcon(image);
-			/*
-			if (imageUrl != null) {
-				// Cargar la imagen desde la URL
-				Image image = Toolkit.getDefaultToolkit().getImage(imageUrl);
-
-				// Devolver un ImageIcon creado con la imagen
-				return new ImageIcon(image);
-			} else {
-				System.err.println("No se pudo cargar la imagen: " + filename);
-				// Manejar el error según tus necesidades
-				return null;
-			}*/
 		} catch (NullPointerException npe) {
 			System.err.println("No se pudo cargar la imagen: " + filename);
 			return null;
